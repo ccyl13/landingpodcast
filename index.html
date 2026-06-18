@@ -164,7 +164,7 @@
     #invitados{background:linear-gradient(to bottom,#0A0A0A,#0d0d0d);border-top:1px solid rgba(250,250,250,.04)}
     .guests-intro{max-width:560px;margin-bottom:3rem}
     .guests-intro p{color:rgba(250,250,250,.42);line-height:1.78;font-size:.96rem}
-    .guests-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:rgba(250,250,250,.04);border:1px solid rgba(250,250,250,.04);border-radius:4px;overflow:hidden}
+    .guests-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:rgba(250,250,250,.04);border:1px solid rgba(250,250,250,.04);border-radius:4px;overflow:hidden}
     .guest-card{background:#0A0A0A;padding:0;text-align:center;position:relative;overflow:hidden;cursor:none;transition:background .28s}
     .guest-card::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,#E8192C,transparent);transform:scaleX(0);transition:transform .4s cubic-bezier(.16,1,.3,1)}
     .guest-card:hover::after{transform:scaleX(1)}
@@ -173,6 +173,16 @@
     .guest-photo img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .5s ease,filter .4s ease;filter:grayscale(25%)}
     .guest-card:hover .guest-photo img{transform:scale(1.06);filter:grayscale(0%)}
     .guest-photo-placeholder{width:100%;height:100%;display:flex;align-items:center;justify-content:center;font-family:'Bebas Neue',sans-serif;font-size:2.4rem;letter-spacing:.04em}
+    .guest-card.soon{background:#080808;cursor:default}
+    .guest-card.soon::after{display:none}
+    .guest-card.soon:hover{background:#0a0a0a}
+    .guest-soon-photo{width:100%;aspect-ratio:3/4;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.7rem;background:linear-gradient(145deg,#0e0e0e,#0a0a0a);border-bottom:1px solid rgba(250,250,250,.04)}
+    .guest-soon-icon{width:48px;height:48px;border-radius:50%;border:1px dashed rgba(232,25,44,.2);display:flex;align-items:center;justify-content:center}
+    .guest-soon-icon svg{width:18px;height:18px;stroke:rgba(232,25,44,.35);fill:none;stroke-width:1.5}
+    .guest-soon-label{font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:rgba(250,250,250,.18)}
+    .guest-card.soon .guest-body{padding:.9rem .8rem 1rem}
+    .guest-card.soon .guest-name{color:rgba(250,250,250,.2);font-style:italic}
+    .guest-card.soon .guest-role{color:rgba(250,250,250,.12)}
     .guest-photo::after{content:'';position:absolute;bottom:0;left:0;right:0;height:55%;background:linear-gradient(to top,rgba(0,0,0,.75),transparent);z-index:1}
     .guest-body{padding:.9rem .8rem 1rem}
     .guest-name{font-weight:600;font-size:.8rem;margin-bottom:.18rem;line-height:1.3;color:rgba(250,250,250,.88)}
@@ -281,7 +291,7 @@
     @media(max-width:980px){
       .episodes-grid{grid-template-columns:1fr 1fr}
       .ep-card.featured{grid-column:span 2}
-      .guests-grid{grid-template-columns:repeat(4,1fr)}
+      .guests-grid{grid-template-columns:repeat(3,1fr)}
       .sponsor-inner{grid-template-columns:1fr}
       .hosts-wrap{max-width:none}
     }
@@ -308,7 +318,7 @@
       .episodes-grid{grid-template-columns:1fr}
       .ep-card.featured{grid-column:span 1}
       .ep-card.featured .ep-thumb{aspect-ratio:16/9}
-      .guests-grid{grid-template-columns:repeat(2,1fr)}
+      .guests-grid{grid-template-columns:repeat(2,1fr);}.guest-card.soon:nth-child(n+5){display:none}
       footer{padding:2rem 1.4rem;flex-direction:column;text-align:center}
       .hosts-wrap{grid-template-columns:1fr;max-width:340px}
       .nl-form{flex-direction:column}
@@ -685,14 +695,6 @@ const statsObs=new IntersectionObserver(es=>es.forEach(e=>{
 }),{threshold:.4});
 const sb=document.querySelector('.stats-bar');if(sb)statsObs.observe(sb);
 
-/* GUEST GRADIENT PALETTE */
-const GUEST_GRADS=[
-  ['#1a0d10','#2d1520'],['#0d1a12','#152d1e'],['#0d0d1a','#15152d'],
-  ['#1a1200','#2d2000'],['#1a000d','#2d001a'],['#001a1a','#002d2d'],
-  ['#1a0a00','#2d1600'],['#0a0a0a','#141414']
-];
-function guestGrad(i){const g=GUEST_GRADS[i%GUEST_GRADS.length];return`linear-gradient(145deg,${g[0]},${g[1]})`;}
-
 /* DATA */
 const EPISODE_META=[
   {title:'Comandante de Iberia revela los secretos que nadie te cuenta sobre volar',desc:'Ramon Vallès se sincera sobre turbulencias, aplausos al aterrizar y todo lo que ocurre en cabina.',date:'Jun 2025',tag:'Nuevo',featured:true},
@@ -703,15 +705,12 @@ const EPISODE_META=[
   {title:'El primero: el divorcio que nunca nos contaron',desc:'Crudo, emotivo y sin guión. El episodio que lo empezó todo.',date:'Ene 2025',tag:'El origen'},
 ];
 
+/* Only real confirmed guests get a vIdx (maps to their episode thumbnail).
+   Episodes 2-5 are host-only (no external guest) so they cannot be used as guest photos. */
 const GUESTS=[
-  {i:'RV',n:'Ramon Vallès',r:'Comandante de Iberia',ep:'Ep. 6',vIdx:0},
-  {i:'CM',n:'Cristina Medina',r:'Actriz',ep:'Ep. 5',vIdx:1},
-  {i:'JB',n:'Jordi Basté',r:'Periodista',ep:'Ep. 4',vIdx:2},
-  {i:'EL',n:'Elisenda López',r:'Psicóloga',ep:'Ep. 3',vIdx:3},
-  {i:'NV',n:'Noemí Valls',r:'Humorista',ep:'Ep. 2',vIdx:4},
-  {i:'MF',n:'Marc Figueras',r:'Escritor',ep:'Ep. 1',vIdx:5},
-  {i:'SR',n:'Sònia Recasens',r:'Política',ep:'Ep. especial',vIdx:6},
-  {i:'??',n:'Próximamente',r:'¿Quién será?',ep:'',vIdx:null},
+  {i:'RV',n:'Ramon Vallès',r:'Comandante de Iberia',ep:'Episodio más reciente',vIdx:0},
+  {i:'CM',n:'Cristina Medina',r:'Actriz',ep:'Episodio anterior',vIdx:1},
+  {soon:true},{soon:true},{soon:true},{soon:true},
 ];
 
 async function fetchVideoIds(){
@@ -781,16 +780,29 @@ async function buildAll(){
   /* --- GUEST SKELETONS --- */
   const gCards=GUESTS.map((gu,i)=>{
     const c=document.createElement('div');
-    c.className='guest-card rv';
-    c.innerHTML=`
-      <div class="guest-photo">
-        <div class="guest-photo-placeholder" style="background:${guestGrad(i)};color:rgba(250,250,250,.2)">${gu.i}</div>
-      </div>
-      <div class="guest-body">
-        <div class="guest-name">${gu.n}</div>
-        <div class="guest-role">${gu.r}</div>
-        ${gu.ep?`<div class="guest-ep">${gu.ep}</div>`:''}
-      </div>`;
+    if(gu.soon){
+      c.className='guest-card soon rv';
+      c.innerHTML=`
+        <div class="guest-soon-photo">
+          <div class="guest-soon-icon"><svg viewBox="0 0 24 24"><path d="M12 5v7m0 4h.01M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/></svg></div>
+          <span class="guest-soon-label">Próximamente</span>
+        </div>
+        <div class="guest-body">
+          <div class="guest-name">¿Quién será?</div>
+          <div class="guest-role">Invitado sorpresa</div>
+        </div>`;
+    } else {
+      c.className='guest-card rv';
+      c.innerHTML=`
+        <div class="guest-photo">
+          <div class="guest-photo-placeholder" style="background:linear-gradient(145deg,#1a0d10,#2d1520);color:rgba(250,250,250,.25)">${gu.i}</div>
+        </div>
+        <div class="guest-body">
+          <div class="guest-name">${gu.n}</div>
+          <div class="guest-role">${gu.r}</div>
+          ${gu.ep?`<div class="guest-ep">${gu.ep}</div>`:''}
+        </div>`;
+    }
     gGrid.appendChild(c);
     ro.observe(c);
     return c;
@@ -820,20 +832,25 @@ async function buildAll(){
     });
   });
 
-  /* --- UPDATE GUESTS IN PARALLEL --- */
+  /* --- UPDATE GUESTS: only real guests with a known episode vIdx --- */
   GUESTS.forEach((gu,i)=>{
-    const vid=gu.vIdx!=null?videoIds[gu.vIdx]||null:null;
+    if(gu.soon||gu.vIdx==null)return;
+    const vid=videoIds[gu.vIdx]||null;
     if(!vid)return;
     resolveThumb(vid).then(thumbUrl=>{
       if(!thumbUrl)return;
-      const ph=gCards[i].querySelector('.guest-photo-placeholder');
-      if(!ph)return;
+      const photo=gCards[i].querySelector('.guest-photo');
+      if(!photo)return;
       const img=document.createElement('img');
       img.src=thumbUrl;
       img.alt=gu.n;
       img.loading='lazy';
       Object.assign(img.style,{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center top'});
-      img.onload=()=>{ph.replaceWith(img);};
+      img.onload=()=>{
+        /* Only replace if img actually shows a person (not a generic/duplicate thumbnail) */
+        const ph=photo.querySelector('.guest-photo-placeholder');
+        if(ph)ph.replaceWith(img);
+      };
     });
   });
 }
