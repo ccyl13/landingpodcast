@@ -347,8 +347,10 @@
     .reel-play-btn{width:48px;height:48px;background:#E8192C;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8);transition:opacity .28s,transform .28s}
     .reel-card:hover .reel-play-btn{opacity:1;transform:scale(1)}
     .reel-play-btn svg{width:18px;height:18px;fill:white;margin-left:3px}
-    .reel-meta{padding:.6rem .15rem .1rem;display:flex;align-items:center;gap:.4rem;font-size:.65rem;color:rgba(250,250,250,.38);letter-spacing:.03em}
-    .reel-meta svg{width:12px;height:12px;opacity:.55;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2}
+    .reel-meta{padding:.7rem .1rem .1rem;display:flex;align-items:center;gap:.45rem}
+    .reel-meta svg{width:11px;height:11px;flex-shrink:0;fill:none;stroke:#E8192C;stroke-width:2;opacity:.8}
+    .reel-views{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:#E8192C;letter-spacing:.04em;line-height:1}
+    .reel-views-label{font-size:.56rem;color:rgba(250,250,250,.28);letter-spacing:.1em;text-transform:uppercase}
     @media(max-width:1200px){.reels-grid{grid-template-columns:repeat(3,1fr)}}
     @media(max-width:768px){.reels-grid{grid-template-columns:repeat(2,1fr);gap:.7rem}}
 
@@ -723,7 +725,8 @@ function buildReels(views){
       </div>
       <div class="reel-meta">
         <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        <span data-reel-views="${id}">${v}</span>
+        <span class="reel-views" data-reel-views="${id}">${v==='–'?'–':'+'+v}</span>
+        <span class="reel-views-label">visualizaciones</span>
       </div>`;
     grid.appendChild(a);
     ro.observe(a);
@@ -737,7 +740,7 @@ async function loadReelViews(){
     const data=await r.json();
     (data.reels||[]).forEach(item=>{
       document.querySelectorAll('[data-reel-views="'+item.id+'"]').forEach(el=>{
-        el.textContent=item.views;
+        el.textContent=item.views==='–'?'–':'+'+item.views;
       });
     });
   }catch(e){}
