@@ -201,7 +201,7 @@
     .hosts-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-top:3.5rem;max-width:760px}
     .host-card{position:relative}
     .host-photo-wrap{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;border-radius:4px;max-height:440px}
-    .host-photo-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;opacity:0;transition:opacity .9s ease,transform .7s ease,filter .5s ease;filter:grayscale(15%)}
+    .host-photo-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;opacity:0;transition:opacity 1.6s ease-in-out,transform .7s ease,filter .5s ease;filter:grayscale(15%)}
     .host-photo-wrap img.active{opacity:1}
     .host-card:hover .host-photo-wrap img.active{transform:scale(1.04);filter:grayscale(0%)}
     .host-photo-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(10,10,10,.95),transparent);z-index:1}
