@@ -1,29 +1,15 @@
 {
   "reels": [
-    {
-      "id": "PcrtkQqPCqE",
-      "views": "1.6M"
-    },
-    {
-      "id": "jRj3i07ttBk",
-      "views": "1.5M"
-    },
-    {
-      "id": "oks-lDhRnhs",
-      "views": "1M"
-    },
-    {
-      "id": "C3Ms5u9SiFs",
-      "views": "1M"
-    },
-    {
-      "id": "BhPRFlRiaRM",
-      "views": "978.2K"
-    },
-    {
-      "id": "o4MDKQYXNC8",
-      "views": "966.1K"
-    }
+    {"id": "PcrtkQqPCqE", "views": "1.6M"},
+    {"id": "jRj3i07ttBk", "views": "1.5M"},
+    {"id": "oks-lDhRnhs", "views": "1M"},
+    {"id": "C3Ms5u9SiFs", "views": "1M"},
+    {"id": "BhPRFlRiaRM", "views": "978.2K"},
+    {"id": "o4MDKQYXNC8", "views": "966.1K"},
+    {"id": "tt-1", "views": "6M"},
+    {"id": "tt-2", "views": "13.4M"},
+    {"id": "ig-1", "views": "–"},
+    {"id": "ig-2", "views": "–"}
   ],
   "updated": "2026-06-28"
 }

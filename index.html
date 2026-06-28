@@ -338,7 +338,7 @@
     #reels{background:#0A0A0A;border-top:1px solid rgba(250,250,250,.04)}
     .reels-header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:3rem}
     .reels-intro p{color:rgba(250,250,250,.42);line-height:1.78;font-size:.96rem;margin-top:.6rem}
-    .reels-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:.9rem}
+    .reels-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:.9rem}
     .reel-card{display:block;position:relative;cursor:none;transition:transform .35s cubic-bezier(.16,1,.3,1);text-decoration:none}
     .reel-card:hover{transform:translateY(-5px)}
     .reel-thumb{aspect-ratio:9/16;position:relative;overflow:hidden;background:#141414;border-radius:6px;border:1px solid rgba(250,250,250,.055)}
@@ -352,7 +352,12 @@
     .reel-meta svg{width:11px;height:11px;flex-shrink:0;fill:none;stroke:#E8192C;stroke-width:2;opacity:.8}
     .reel-views{font-family:'Bebas Neue',sans-serif;font-size:1.35rem;color:#E8192C;letter-spacing:.04em;line-height:1}
     .reel-views-label{font-size:.56rem;color:rgba(250,250,250,.28);letter-spacing:.1em;text-transform:uppercase}
-    @media(max-width:1200px){.reels-grid{grid-template-columns:repeat(3,1fr)}}
+    .reel-badge{position:absolute;top:.5rem;right:.5rem;z-index:3;width:22px;height:22px;background:rgba(0,0,0,.65);border-radius:50%;display:flex;align-items:center;justify-content:center;backdrop-filter:blur(4px)}
+    .reel-badge svg{width:11px;height:11px}
+    .ig-placeholder{width:100%;height:100%;background:linear-gradient(135deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);display:flex;align-items:center;justify-content:center}
+    .ig-placeholder svg{width:38%;opacity:.92}
+    @media(max-width:1200px){.reels-grid{grid-template-columns:repeat(4,1fr)}}
+    @media(max-width:900px){.reels-grid{grid-template-columns:repeat(3,1fr)}}
     @media(max-width:768px){.reels-grid{grid-template-columns:repeat(2,1fr);gap:.7rem}}
 
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
@@ -623,7 +628,21 @@
 </button>
 
 <script>
-const REELS_IDS=['PcrtkQqPCqE','jRj3i07ttBk','oks-lDhRnhs','C3Ms5u9SiFs','BhPRFlRiaRM','o4MDKQYXNC8'];
+const REELS=[
+  {p:'yt',id:'PcrtkQqPCqE'},
+  {p:'yt',id:'jRj3i07ttBk'},
+  {p:'yt',id:'oks-lDhRnhs'},
+  {p:'yt',id:'C3Ms5u9SiFs'},
+  {p:'yt',id:'BhPRFlRiaRM'},
+  {p:'yt',id:'o4MDKQYXNC8'},
+  {p:'tt',id:'tt-1',url:'https://www.tiktok.com/@mamiquedices_/video/7583807578031934742',views:'6M'},
+  {p:'tt',id:'tt-2',url:'https://www.tiktok.com/@mamiquedices_/video/7601988946934959382',views:'13.4M'},
+  {p:'ig',id:'ig-1',url:'https://www.instagram.com/reel/DPNF3ZtiHzp/',views:'–'},
+  {p:'ig',id:'ig-2',url:'https://www.instagram.com/reel/DUOjnKmDsNe/',views:'–'},
+];
+const BADGE_YT=`<svg viewBox="0 0 24 24" fill="#FF0000"><path d="M23.498 6.186a3.016 3.016 0 0 0-2.122-2.136C19.505 3.545 12 3.545 12 3.545s-7.505 0-9.377.505A3.017 3.017 0 0 0 .502 6.186C0 8.07 0 12 0 12s0 3.93.502 5.814a3.016 3.016 0 0 0 2.122 2.136c1.871.505 9.376.505 9.376.505s7.505 0 9.377-.505a3.015 3.015 0 0 0 2.122-2.136C24 15.93 24 12 24 12s0-3.93-.502-5.814zM9.545 15.568V8.432L15.818 12l-6.273 3.568z"/></svg>`;
+const BADGE_TT=`<svg viewBox="0 0 24 24" fill="white"><path d="M19.59 6.69a4.83 4.83 0 01-3.77-4.25V2h-3.45v13.67a2.89 2.89 0 01-2.88 2.5 2.89 2.89 0 01-2.89-2.89 2.89 2.89 0 012.89-2.89c.28 0 .54.04.79.1V9.01a6.33 6.33 0 00-.79-.05 6.34 6.34 0 00-6.34 6.34 6.34 6.34 0 006.34 6.34 6.34 6.34 0 006.33-6.34V8.77a8.17 8.17 0 004.78 1.52V6.85a4.84 4.84 0 01-1.01-.16z"/></svg>`;
+const BADGE_IG=`<svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="url(#igGrad)"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="1.8"/><circle cx="17.5" cy="6.5" r="1.5" fill="white"/></svg>`;
 
 /* MARQUEE */
 (function(){
@@ -711,29 +730,34 @@ const sb=document.querySelector('.stats-bar');if(sb)statsObs.observe(sb);
 function buildReels(views){
   views=views||{};
   const grid=document.getElementById('reels-grid');
-  REELS_IDS.forEach((id,i)=>{
-    const v=views[id]||'–';
+  REELS.forEach((reel,i)=>{
+    const v=views[reel.id]||reel.views||'–';
+    const dv=v==='–'?'–':'+'+v;
+    const url=reel.url||(reel.p==='yt'?'https://youtube.com/shorts/'+reel.id:'#');
+    const badge={yt:BADGE_YT,tt:BADGE_TT,ig:BADGE_IG}[reel.p]||'';
+    let thumb='';
+    if(reel.p==='yt'){
+      thumb=`<img src="https://i.ytimg.com/vi/${reel.id}/oar2.jpg" onerror="this.src='https://img.youtube.com/vi/${reel.id}/hqdefault.jpg';this.onerror=null" alt="" loading="eager"/>`;
+    }else if(reel.p==='tt'){
+      thumb=`<img src="images/${reel.id}.jpg" alt="" loading="eager"/>`;
+    }else{
+      thumb=`<div class="ig-placeholder"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="url(#igGrad)"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="white"/></svg></div>`;
+    }
     const a=document.createElement('a');
-    a.href='https://youtube.com/shorts/'+id;
-    a.target='_blank';
-    a.rel='noopener';
+    a.href=url;a.target='_blank';a.rel='noopener';
     a.className='reel-card rv d'+((i%3)+1);
     a.innerHTML=`
       <div class="reel-thumb">
-        <img src="https://i.ytimg.com/vi/${id}/oar2.jpg"
-             onerror="this.src='https://img.youtube.com/vi/${id}/hqdefault.jpg';this.onerror=null"
-             alt="Reel" loading="eager"/>
-        <div class="reel-overlay">
-          <div class="reel-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
-        </div>
+        ${thumb}
+        <div class="reel-overlay"><div class="reel-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+        <div class="reel-badge">${badge}</div>
       </div>
       <div class="reel-meta">
         <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
-        <span class="reel-views" data-reel-views="${id}">${v==='–'?'–':'+'+v}</span>
+        <span class="reel-views" data-reel-views="${reel.id}">${dv}</span>
         <span class="reel-views-label">visualizaciones</span>
       </div>`;
-    grid.appendChild(a);
-    ro.observe(a);
+    grid.appendChild(a);ro.observe(a);
   });
 }
 
