@@ -333,6 +333,25 @@
       .platforms-wrap{gap:.6rem}
       .plat-btn{padding:.72rem 1rem;font-size:.7rem}
     }
+    /* REELS */
+    #reels{background:#0A0A0A;border-top:1px solid rgba(250,250,250,.04)}
+    .reels-header{display:flex;align-items:flex-end;justify-content:space-between;flex-wrap:wrap;gap:1rem;margin-bottom:3rem}
+    .reels-intro p{color:rgba(250,250,250,.42);line-height:1.78;font-size:.96rem;margin-top:.6rem}
+    .reels-grid{display:grid;grid-template-columns:repeat(6,1fr);gap:.9rem}
+    .reel-card{display:block;position:relative;cursor:none;transition:transform .35s cubic-bezier(.16,1,.3,1);text-decoration:none}
+    .reel-card:hover{transform:translateY(-5px)}
+    .reel-thumb{aspect-ratio:9/16;position:relative;overflow:hidden;background:#141414;border-radius:6px;border:1px solid rgba(250,250,250,.055)}
+    .reel-thumb img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .55s ease;display:block}
+    .reel-card:hover .reel-thumb img{transform:scale(1.05)}
+    .reel-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.45) 0%,transparent 55%);display:flex;align-items:center;justify-content:center}
+    .reel-play-btn{width:48px;height:48px;background:#E8192C;border-radius:50%;display:flex;align-items:center;justify-content:center;opacity:0;transform:scale(.8);transition:opacity .28s,transform .28s}
+    .reel-card:hover .reel-play-btn{opacity:1;transform:scale(1)}
+    .reel-play-btn svg{width:18px;height:18px;fill:white;margin-left:3px}
+    .reel-meta{padding:.6rem .15rem .1rem;display:flex;align-items:center;gap:.4rem;font-size:.65rem;color:rgba(250,250,250,.38);letter-spacing:.03em}
+    .reel-meta svg{width:12px;height:12px;opacity:.55;flex-shrink:0;fill:none;stroke:currentColor;stroke-width:2}
+    @media(max-width:1200px){.reels-grid{grid-template-columns:repeat(3,1fr)}}
+    @media(max-width:768px){.reels-grid{grid-template-columns:repeat(2,1fr);gap:.7rem}}
+
     @media(prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
   </style>
 </head>
@@ -357,8 +376,7 @@
 <div class="mob-overlay" id="mob-overlay"></div>
 <div class="mob-menu" id="mob-menu">
   <ul class="mob-links">
-    <li><a href="#episodes">Episodios</a></li>
-    <li><a href="#invitados">Invitados</a></li>
+    <li><a href="#reels">Reels</a></li>
     <li><a href="#hosts">Ellos</a></li>
     <li><a href="#sponsor">Patrocinio</a></li>
     <li><a href="#plataformas">Esc&#250;chanos</a></li>
@@ -380,8 +398,7 @@
     <img src="images/logo-bw.png" alt="MAMI ¿QUÉ DICES?" class="nav-logo-img"/>
   </a>
   <ul class="nav-links" id="nav-links">
-    <li><a href="#episodes" data-section="episodes">Episodios</a></li>
-    <li><a href="#invitados" data-section="invitados">Invitados</a></li>
+    <li><a href="#reels" data-section="reels">Reels</a></li>
     <li><a href="#hosts" data-section="hosts">Ellos</a></li>
     <li><a href="#sponsor" data-section="sponsor">Patrocinio</a></li>
     <li><a href="#plataformas" data-section="plataformas">Esc&#250;chanos</a></li>
@@ -449,29 +466,20 @@
   <div class="stat"><div class="stat-number" data-stat="total" data-target="+255K">+255K</div><div class="stat-label">Comunidad total</div><div class="stat-platform">Multiplataforma</div></div>
 </div>
 
-<!-- EPISODES -->
-<section id="episodes">
-  <div class="episodes-header">
-    <div class="episodes-header-text">
-      <div class="sec-eye rv">&#218;ltimos episodios</div>
-      <h2 class="rv d1">Lo &#250;ltimo <em>que</em> DICES</h2>
+<!-- REELS -->
+<section id="reels">
+  <div class="reels-header">
+    <div class="reels-intro">
+      <div class="sec-eye rv">El alcance</div>
+      <h2 class="rv d1">Reels <em>que</em> IMPACTAN</h2>
+      <p class="rv d2">Los momentos que m&#225;s han llegado. N&#250;meros reales, sin trampa.</p>
     </div>
-    <a href="https://www.youtube.com/@mamiquedices/videos" target="_blank" class="btn-secondary rv d2" style="white-space:nowrap">
+    <a href="https://www.youtube.com/@mamiquedices/shorts" target="_blank" class="btn-secondary rv d2" style="white-space:nowrap">
       Ver todos
       <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
     </a>
   </div>
-  <div class="episodes-grid" id="episodes-grid"></div>
-</section>
-
-<!-- GUESTS -->
-<section id="invitados">
-  <div class="sec-eye rv">Caras conocidas</div>
-  <h2 class="rv d1">Invitados <em>top</em></h2>
-  <div class="guests-intro rv d2">
-    <p>Cada semana una voz distinta. Figuras del mundo de la comunicaci&#243;n, el entretenimiento y la cultura que se sinceran con Jordi y Elisabeth &#8212; sin red, sin filtro.</p>
-  </div>
-  <div class="guests-grid" id="guests-grid"></div>
+  <div class="reels-grid" id="reels-grid"></div>
 </section>
 
 <!-- MANIFESTO -->
@@ -536,15 +544,15 @@
     <div class="sponsor-right rv d2">
       <h3>&#191;Quieres <span>patrocinarnos?</span></h3>
       <p>Menciones integradas, contenido patrocinado y colaboraciones a medida. Cu&#233;ntanos tu marca y lo que buscas &#8212; lo hacemos funcionar.</p>
-      <p class="sponsor-email-note">Escr&#237;benos a <a href="mailto:direccio@elisabethvicens.com">direccio@elisabethvicens.com</a> y te respondemos en menos de 48h.</p>
-      <a href="mailto:direccio@elisabethvicens.com?subject=Patrocinio%20MAMI%20QU%C3%89%20DICES" class="btn-primary" style="margin-top:1.5rem;display:inline-flex">
+      <p class="sponsor-email-note">Escr&#237;benos a <a href="mailto:contacto@mamiquedicespodcast.com">contacto@mamiquedicespodcast.com</a> y te respondemos en menos de 48h.</p>
+      <a href="mailto:contacto@mamiquedicespodcast.com?subject=Patrocinio%20MAMI%20QU%C3%89%20DICES" class="btn-primary" style="margin-top:1.5rem;display:inline-flex">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
         Contactar ahora
       </a>
       <div class="sp-divider"></div>
       <div class="participate">
         <h4>&#191;Quieres participar?</h4>
-        <p>Si tienes una historia que contar, escr&#237;benos a <a href="mailto:direccio@elisabethvicens.com?subject=Quiero%20participar%20en%20el%20podcast">direccio@elisabethvicens.com</a> &#8212; sin filtros, como el programa.</p>
+        <p>Si tienes una historia que contar, escr&#237;benos a <a href="mailto:contacto@mamiquedicespodcast.com?subject=Quiero%20participar%20en%20el%20podcast">contacto@mamiquedicespodcast.com</a> &#8212; sin filtros, como el programa.</p>
       </div>
     </div>
   </div>
@@ -599,7 +607,7 @@
     <li><a href="https://www.instagram.com/mamiquedices__/" target="_blank">Instagram</a></li>
     <li><a href="https://www.tiktok.com/@mamiquedices_" target="_blank">TikTok</a></li>
     <li><a href="https://open.spotify.com/show/134NdBtbJ1R2cqrW0xeYNp" target="_blank">Spotify</a></li>
-    <li><a href="mailto:direccio@elisabethvicens.com">Contacto</a></li>
+    <li><a href="mailto:contacto@mamiquedicespodcast.com">Contacto</a></li>
   </ul>
   <p class="foot-copy">&#169; 2025 MAMI &#191;QU&#201; DICES? &middot; Sin filtros.</p>
 </footer>
@@ -609,8 +617,7 @@
 </button>
 
 <script>
-const CHANNEL_ID='UCqxE5h9WEkE3XuTQhbCsBDw';
-const CHANNEL_URL='https://www.youtube.com/@mamiquedices';
+const REELS_IDS=['PcrtkQqPCqE','jRj3i07ttBk','oks-lDhRnhs','C3Ms5u9SiFs','BhPRFlRiaRM','o4MDKQYXNC8'];
 
 /* MARQUEE */
 (function(){
@@ -666,7 +673,7 @@ document.querySelectorAll('.rv').forEach(el=>ro.observe(el));
 
 /* NAV ACTIVE SECTION */
 const navLinks=document.querySelectorAll('[data-section]');
-const sectionsToWatch=['episodes','invitados','hosts','sponsor','plataformas'];
+const sectionsToWatch=['reels','hosts','sponsor','plataformas'];
 const secObs=new IntersectionObserver(es=>{
   es.forEach(e=>{
     if(e.isIntersecting){
@@ -695,164 +702,45 @@ const statsObs=new IntersectionObserver(es=>es.forEach(e=>{
 }),{threshold:.4});
 const sb=document.querySelector('.stats-bar');if(sb)statsObs.observe(sb);
 
-/* DATA */
-const EPISODE_META=[
-  {title:'Comandante de Iberia revela los secretos que nadie te cuenta sobre volar',desc:'Ramon Vallès se sincera sobre turbulencias, aplausos al aterrizar y todo lo que ocurre en cabina.',date:'Jun 2025',tag:'Nuevo',featured:true},
-  {title:'Cristina Medina: la dura realidad de ser un enfermo de cáncer',desc:'Una conversación que parte el corazón. Sin eufemismos, con toda la verdad sobre la enfermedad.',date:'May 2025',tag:'Top del mes'},
-  {title:'El episodio que casi rompe nuestra relación',desc:'Jordi saca un tema que llevaba años en la nevera. Elisabeth no se queda callada. Nadie sale indemne.',date:'Abr 2025',tag:null},
-  {title:'Sexo, generaciones y lo que nunca nos dijimos en casa',desc:'El episodio más escuchado. Más de 50K reproducciones en la primera semana.',date:'Mar 2025',tag:'Más escuchado'},
-  {title:'Dinero: el gran tabú familiar que nadie quiere tocar',desc:'De los sobres de la paga a los sueldos reales. ¿Hay que hablar de dinero en familia?',date:'Feb 2025',tag:null},
-  {title:'El primero: el divorcio que nunca nos contaron',desc:'Crudo, emotivo y sin guión. El episodio que lo empezó todo.',date:'Ene 2025',tag:'El origen'},
-];
-
-/* Only real confirmed guests get a vIdx (maps to their episode thumbnail).
-   Episodes 2-5 are host-only (no external guest) so they cannot be used as guest photos. */
-const GUESTS=[
-  {i:'RV',n:'Ramon Vallès',r:'Comandante de Iberia',ep:'Episodio más reciente',vIdx:0},
-  {i:'CM',n:'Cristina Medina',r:'Actriz',ep:'Episodio anterior',vIdx:1},
-  {soon:true},{soon:true},{soon:true},{soon:true},
-];
-
-async function fetchVideoIds(){
-  const feed='https://www.youtube.com/feeds/videos.xml?channel_id='+CHANNEL_ID;
-  const proxies=[
-    {url:'https://api.allorigins.win/get?url='+encodeURIComponent(feed),json:true},
-    {url:'https://corsproxy.io/?'+encodeURIComponent(feed),json:false},
-  ];
-  for(const p of proxies){
-    try{
-      const ctrl=new AbortController();
-      const t=setTimeout(()=>ctrl.abort(),7000);
-      const r=await fetch(p.url,{signal:ctrl.signal});
-      clearTimeout(t);
-      if(!r.ok)continue;
-      const text=p.json?(await r.json()).contents:(await r.text());
-      const ids=[...text.matchAll(/yt:videoId>([^<]+)/g)].map(x=>x[1]);
-      if(ids.length)return ids;
-    }catch(e){}
-  }
-  return[];
-}
-
-function resolveThumb(vid){
-  return new Promise(resolve=>{
-    if(!vid)return resolve(null);
-    const quals=['maxresdefault','hqdefault','mqdefault'];
-    let qi=0;
-    function tryNext(){
-      if(qi>=quals.length)return resolve(null);
-      const img=new Image();
-      img.onload=function(){
-        if(this.naturalWidth<=120){if(qi<quals.length-1){qi++;tryNext();}else{resolve(null);}}
-        else{resolve('https://img.youtube.com/vi/'+vid+'/'+quals[qi]+'.jpg');}
-      };
-      img.onerror=()=>{qi++;tryNext();};
-      img.src='https://img.youtube.com/vi/'+vid+'/'+quals[qi]+'.jpg';
-    }
-    tryNext();
-  });
-}
-
-/* Build skeleton cards immediately, then update with real data */
-async function buildAll(){
-  const grid=document.getElementById('episodes-grid');
-  const gGrid=document.getElementById('guests-grid');
-
-  /* --- EPISODE SKELETONS --- */
-  const epCards=EPISODE_META.map((ep,i)=>{
-    const card=document.createElement('div');
-    card.className='ep-card rv'+(ep.featured?' featured':'');
-    card.innerHTML=`
-      <div class="ep-thumb">
-        <div class="thumb-placeholder"><img src="images/logo-bw.png" class="ph-logo" alt=""/></div>
-        <div class="ep-play"><div class="ep-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div></div>
+function buildReels(views){
+  views=views||{};
+  const grid=document.getElementById('reels-grid');
+  REELS_IDS.forEach((id,i)=>{
+    const v=views[id]||'–';
+    const a=document.createElement('a');
+    a.href='https://youtube.com/shorts/'+id;
+    a.target='_blank';
+    a.rel='noopener';
+    a.className='reel-card rv d'+((i%3)+1);
+    a.innerHTML=`
+      <div class="reel-thumb">
+        <img src="https://i.ytimg.com/vi/${id}/oar2.jpg"
+             onerror="this.src='https://img.youtube.com/vi/${id}/hqdefault.jpg';this.onerror=null"
+             alt="Reel" loading="eager"/>
+        <div class="reel-overlay">
+          <div class="reel-play-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></div>
+        </div>
       </div>
-      <div class="ep-body">
-        <div class="ep-meta"><span class="ep-num">EP. ${String(EPISODE_META.length-i).padStart(2,'0')}</span>${ep.tag?`<span class="ep-tag">${ep.tag}</span>`:''}<span>${ep.date}</span></div>
-        <div class="ep-title">${ep.title}</div>
-        <div class="ep-desc">${ep.desc}</div>
+      <div class="reel-meta">
+        <svg viewBox="0 0 24 24"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+        <span data-reel-views="${id}">${v}</span>
       </div>`;
-    grid.appendChild(card);
-    ro.observe(card);
-    return card;
+    grid.appendChild(a);
+    ro.observe(a);
   });
+}
 
-  /* --- GUEST SKELETONS --- */
-  const gCards=GUESTS.map((gu,i)=>{
-    const c=document.createElement('div');
-    if(gu.soon){
-      c.className='guest-card soon rv';
-      c.innerHTML=`
-        <div class="guest-soon-photo">
-          <div class="guest-soon-icon"><svg viewBox="0 0 24 24"><path d="M12 5v7m0 4h.01M12 22c5.523 0 10-4.477 10-10S17.523 2 12 2 2 6.477 2 12s4.477 10 10 10z"/></svg></div>
-          <span class="guest-soon-label">Próximamente</span>
-        </div>
-        <div class="guest-body">
-          <div class="guest-name">¿Quién será?</div>
-          <div class="guest-role">Invitado sorpresa</div>
-        </div>`;
-    } else {
-      c.className='guest-card rv';
-      c.innerHTML=`
-        <div class="guest-photo">
-          <div class="guest-photo-placeholder" style="background:linear-gradient(145deg,#1a0d10,#2d1520);color:rgba(250,250,250,.25)">${gu.i}</div>
-        </div>
-        <div class="guest-body">
-          <div class="guest-name">${gu.n}</div>
-          <div class="guest-role">${gu.r}</div>
-          ${gu.ep?`<div class="guest-ep">${gu.ep}</div>`:''}
-        </div>`;
-    }
-    gGrid.appendChild(c);
-    ro.observe(c);
-    return c;
-  });
-
-  /* --- FETCH VIDEO IDS --- */
-  const videoIds=await fetchVideoIds();
-
-  /* --- UPDATE EPISODES IN PARALLEL --- */
-  EPISODE_META.forEach((ep,i)=>{
-    const vid=videoIds[i]||null;
-    const url=vid?'https://www.youtube.com/watch?v='+vid:CHANNEL_URL+'/videos';
-    epCards[i].addEventListener('click',()=>window.open(url,'_blank'));
-
-    if(!vid)return;
-    resolveThumb(vid).then(thumbUrl=>{
-      if(!thumbUrl)return;
-      const thumb=epCards[i].querySelector('.ep-thumb');
-      const img=document.createElement('img');
-      img.className='ep-thumb-img';
-      img.loading='lazy';
-      img.alt='';
-      img.onload=()=>img.classList.add('loaded');
-      img.onerror=()=>img.remove();
-      img.src=thumbUrl;
-      thumb.insertBefore(img,thumb.firstChild);
+async function loadReelViews(){
+  try{
+    const r=await fetch('data/reels.json?_='+Date.now());
+    if(!r.ok)return;
+    const data=await r.json();
+    (data.reels||[]).forEach(item=>{
+      document.querySelectorAll('[data-reel-views="'+item.id+'"]').forEach(el=>{
+        el.textContent=item.views;
+      });
     });
-  });
-
-  /* --- UPDATE GUESTS: only real guests with a known episode vIdx --- */
-  GUESTS.forEach((gu,i)=>{
-    if(gu.soon||gu.vIdx==null)return;
-    const vid=videoIds[gu.vIdx]||null;
-    if(!vid)return;
-    resolveThumb(vid).then(thumbUrl=>{
-      if(!thumbUrl)return;
-      const photo=gCards[i].querySelector('.guest-photo');
-      if(!photo)return;
-      const img=document.createElement('img');
-      img.src=thumbUrl;
-      img.alt=gu.n;
-      img.loading='lazy';
-      Object.assign(img.style,{width:'100%',height:'100%',objectFit:'cover',objectPosition:'center top'});
-      img.onload=()=>{
-        /* Only replace if img actually shows a person (not a generic/duplicate thumbnail) */
-        const ph=photo.querySelector('.guest-photo-placeholder');
-        if(ph)ph.replaceWith(img);
-      };
-    });
-  });
+  }catch(e){}
 }
 
 function handleSubscribe(e){
@@ -878,7 +766,8 @@ async function loadStats(){
   }catch(e){}
 }
 
-buildAll();
+buildReels();
+loadReelViews();
 loadStats();
 </script>
 </body>

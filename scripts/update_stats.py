@@ -25,7 +25,17 @@ HEADERS = {
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
 }
 
-STATS_PATH = Path(__file__).parent.parent / "data" / "stats.json"
+STATS_PATH  = Path(__file__).parent.parent / "data" / "stats.json"
+REELS_PATH  = Path(__file__).parent.parent / "data" / "reels.json"
+
+REELS_IDS = [
+    "PcrtkQqPCqE",
+    "jRj3i07ttBk",
+    "oks-lDhRnhs",
+    "C3Ms5u9SiFs",
+    "BhPRFlRiaRM",
+    "o4MDKQYXNC8",
+]
 
 
 # ── helpers ──────────────────────────────────────────────────────────────────
@@ -107,6 +117,20 @@ def scrape_instagram(username: str) -> str | None:
     return None
 
 
+def scrape_video_views(video_id: str) -> str | None:
+    for url in [
+        f"https://www.youtube.com/shorts/{video_id}",
+        f"https://www.youtube.com/watch?v={video_id}",
+    ]:
+        html = get(url)
+        if not html:
+            continue
+        m = re.search(r'"viewCount":"(\d+)"', html)
+        if m:
+            return fmt(int(m.group(1)))
+    return None
+
+
 def scrape_tiktok(username: str) -> str | None:
     html = get(f"https://www.tiktok.com/@{username}")
     if not html:
@@ -157,6 +181,25 @@ def main():
         json.dump(stats, f, indent=2, ensure_ascii=False)
 
     print(f"\nstats.json updated: {stats}")
+
+    # ── Reels view counts ────────────────────────────────────────────────────
+    with open(REELS_PATH) as f:
+        current_reels = json.load(f)
+
+    current_views = {r["id"]: r["views"] for r in current_reels.get("reels", [])}
+
+    reels = []
+    for vid in REELS_IDS:
+        print(f"Scraping views for {vid}…")
+        v = scrape_video_views(vid)
+        print(f"  → {v or 'failed, keeping ' + current_views.get(vid, '–')}")
+        reels.append({"id": vid, "views": v or current_views.get(vid, "–")})
+
+    reels_data = {"reels": reels, "updated": date.today().isoformat()}
+    with open(REELS_PATH, "w") as f:
+        json.dump(reels_data, f, indent=2, ensure_ascii=False)
+
+    print(f"\nreels.json updated")
 
 
 if __name__ == "__main__":
