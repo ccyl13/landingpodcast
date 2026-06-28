@@ -201,8 +201,9 @@
     .hosts-wrap{display:grid;grid-template-columns:1fr 1fr;gap:2.5rem;margin-top:3.5rem;max-width:760px}
     .host-card{position:relative}
     .host-photo-wrap{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;border-radius:4px;max-height:440px}
-    .host-photo-wrap img{width:100%;height:100%;object-fit:cover;object-position:center top;transition:transform .7s ease,filter .5s ease;filter:grayscale(15%)}
-    .host-card:hover .host-photo-wrap img{transform:scale(1.04);filter:grayscale(0%)}
+    .host-photo-wrap img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;object-position:center top;opacity:0;transition:opacity .9s ease,transform .7s ease,filter .5s ease;filter:grayscale(15%)}
+    .host-photo-wrap img.active{opacity:1}
+    .host-card:hover .host-photo-wrap img.active{transform:scale(1.04);filter:grayscale(0%)}
     .host-photo-wrap::after{content:'';position:absolute;bottom:0;left:0;right:0;height:50%;background:linear-gradient(to top,rgba(10,10,10,.95),transparent);z-index:1}
     .host-badge{position:absolute;bottom:1.1rem;left:1.1rem;z-index:2;font-family:'Bebas Neue',sans-serif;font-size:1.7rem;letter-spacing:.05em;line-height:1;text-shadow:0 2px 12px rgba(0,0,0,.9)}
     .host-badge small{display:block;font-family:'Inter',sans-serif;font-size:.6rem;letter-spacing:.2em;text-transform:uppercase;color:#E8192C;font-weight:600;margin-bottom:.18rem}
@@ -378,8 +379,8 @@
 <div class="mob-overlay" id="mob-overlay"></div>
 <div class="mob-menu" id="mob-menu">
   <ul class="mob-links">
-    <li><a href="#reels">Reels</a></li>
-    <li><a href="#hosts">Ellos</a></li>
+    <li><a href="#reels">Impacto</a></li>
+    <li><a href="#hosts">Qui&#233;nes somos</a></li>
     <li><a href="#sponsor">Patrocinio</a></li>
     <li><a href="#plataformas">Esc&#250;chanos</a></li>
   </ul>
@@ -400,8 +401,8 @@
     <img src="images/logo-bw.png" alt="MAMI ¿QUÉ DICES?" class="nav-logo-img"/>
   </a>
   <ul class="nav-links" id="nav-links">
-    <li><a href="#reels" data-section="reels">Reels</a></li>
-    <li><a href="#hosts" data-section="hosts">Ellos</a></li>
+    <li><a href="#reels" data-section="reels">Impacto</a></li>
+    <li><a href="#hosts" data-section="hosts">Qui&#233;nes somos</a></li>
     <li><a href="#sponsor" data-section="sponsor">Patrocinio</a></li>
     <li><a href="#plataformas" data-section="plataformas">Esc&#250;chanos</a></li>
   </ul>
@@ -500,7 +501,9 @@
   <div class="hosts-wrap">
     <div class="host-card rv d2">
       <div class="host-photo-wrap">
-        <img src="images/elisabeth.jpg" alt="Elisabeth Vicens" style="object-position:center 20%"/>
+        <img src="images/elisabeth-1.jpg" alt="Elisabeth Vicens" class="active" style="object-position:center 20%"/>
+        <img src="images/elisabeth-2.png" alt="Elisabeth Vicens" style="object-position:center 20%"/>
+        <img src="images/elisabeth-3.png" alt="Elisabeth Vicens" style="object-position:center 20%"/>
         <div class="host-badge"><small>La Mami</small>ELISABETH VICENS</div>
       </div>
       <div class="host-info">
@@ -514,7 +517,8 @@
     </div>
     <div class="host-card rv d3">
       <div class="host-photo-wrap">
-        <img src="images/jordi.jpg" alt="Jordi Tud&#243;"/>
+        <img src="images/jordi-1.jpg" alt="Jordi Tud&#243;" class="active"/>
+        <img src="images/jordi-2.jpg" alt="Jordi Tud&#243;"/>
         <div class="host-badge"><small>El Hijo</small>JORDI TUD&#211;</div>
       </div>
       <div class="host-info">
@@ -768,6 +772,18 @@ async function loadStats(){
     });
   }catch(e){}
 }
+
+/* HOST SLIDESHOW */
+document.querySelectorAll('.host-photo-wrap').forEach(wrap=>{
+  const slides=wrap.querySelectorAll('img');
+  if(slides.length<2)return;
+  let i=0;
+  setInterval(()=>{
+    slides[i].classList.remove('active');
+    i=(i+1)%slides.length;
+    slides[i].classList.add('active');
+  },4000);
+});
 
 buildReels();
 loadReelViews();
