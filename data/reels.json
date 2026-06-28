@@ -1,11 +1,29 @@
 {
   "reels": [
-    {"id": "PcrtkQqPCqE", "views": "–"},
-    {"id": "jRj3i07ttBk", "views": "–"},
-    {"id": "oks-lDhRnhs", "views": "–"},
-    {"id": "C3Ms5u9SiFs", "views": "–"},
-    {"id": "BhPRFlRiaRM", "views": "–"},
-    {"id": "o4MDKQYXNC8", "views": "–"}
+    {
+      "id": "PcrtkQqPCqE",
+      "views": "1.6M"
+    },
+    {
+      "id": "jRj3i07ttBk",
+      "views": "1.5M"
+    },
+    {
+      "id": "oks-lDhRnhs",
+      "views": "1M"
+    },
+    {
+      "id": "C3Ms5u9SiFs",
+      "views": "1M"
+    },
+    {
+      "id": "BhPRFlRiaRM",
+      "views": "978.2K"
+    },
+    {
+      "id": "o4MDKQYXNC8",
+      "views": "966.1K"
+    }
   ],
   "updated": "2026-06-28"
 }

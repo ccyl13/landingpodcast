@@ -74,7 +74,7 @@ def get(url: str) -> str | None:
         r.raise_for_status()
         return r.text
     except Exception as e:
-        print(f"  GET {url} → {e}")
+        print(f"  GET {url} -> {e}")
         return None
 
 
@@ -153,15 +153,15 @@ def main():
 
     print("Scraping YouTube…")
     yt = scrape_youtube("UCqxE5h9WEkE3XuTQhbCsBDw")
-    print(f"  → {yt or 'failed, keeping ' + current['youtube']}")
+    print(f"  -> {yt or 'failed, keeping ' + current['youtube']}")
 
     print("Scraping Instagram…")
     ig = scrape_instagram("mamiquedices__")
-    print(f"  → {ig or 'failed, keeping ' + current['instagram']}")
+    print(f"  -> {ig or 'failed, keeping ' + current['instagram']}")
 
     print("Scraping TikTok…")
     tt = scrape_tiktok("mamiquedices_")
-    print(f"  → {tt or 'failed, keeping ' + current['tiktok']}")
+    print(f"  -> {tt or 'failed, keeping ' + current['tiktok']}")
 
     yt = yt or current["youtube"]
     ig = ig or current["instagram"]
@@ -192,7 +192,7 @@ def main():
     for vid in REELS_IDS:
         print(f"Scraping views for {vid}…")
         v = scrape_video_views(vid)
-        print(f"  → {v or 'failed, keeping ' + current_views.get(vid, '–')}")
+        print(f"  -> {v or 'failed, keeping ' + current_views.get(vid, '–')}")
         reels.append({"id": vid, "views": v or current_views.get(vid, "–")})
 
     reels_data = {"reels": reels, "updated": date.today().isoformat()}
