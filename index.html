@@ -741,7 +741,7 @@ function buildReels(views){
     }else if(reel.p==='tt'){
       thumb=`<img src="images/${reel.id}.jpg" alt="" loading="eager"/>`;
     }else{
-      thumb=`<div class="ig-placeholder"><svg viewBox="0 0 24 24"><rect x="2" y="2" width="20" height="20" rx="5" fill="url(#igGrad)"/><circle cx="12" cy="12" r="4" fill="none" stroke="white" stroke-width="2"/><circle cx="17.5" cy="6.5" r="1.5" fill="white"/></svg></div>`;
+      thumb=`<img src="images/${reel.id}.jpg" alt="" loading="eager"/>`;
     }
     const a=document.createElement('a');
     a.href=url;a.target='_blank';a.rel='noopener';
