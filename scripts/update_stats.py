@@ -1,7 +1,7 @@
 """
-Weekly scraper — no credentials needed.
+Daily scraper — no credentials needed.
 Reads public pages of YouTube, Instagram and TikTok and updates data/stats.json.
-Run automatically via GitHub Actions every Monday at 08:00 UTC.
+Run automatically via GitHub Actions every day at 08:00 UTC.
 """
 import json
 import re
@@ -68,9 +68,9 @@ def parse_k(s: str) -> int:
     return int(val)
 
 
-def get(url: str) -> str | None:
+def get(url: str, cookies: dict | None = None) -> str | None:
     try:
-        r = requests.get(url, headers=HEADERS, timeout=20)
+        r = requests.get(url, headers=HEADERS, cookies=cookies, timeout=20)
         r.raise_for_status()
         return r.text
     except Exception as e:
@@ -81,14 +81,21 @@ def get(url: str) -> str | None:
 # ── scrapers ─────────────────────────────────────────────────────────────────
 
 def scrape_youtube(channel_id: str) -> str | None:
-    html = get(f"https://www.youtube.com/channel/{channel_id}")
+    # /channel/<id> without EU consent cookies redirects to consent.youtube.com;
+    # /about + CONSENT/SOCS cookies reaches the real page, where the field is a
+    # flat string ("subscriberCountText":"44.8K subscribers") rather than the
+    # older nested {"simpleText": "..."} shape.
+    cookies = {"CONSENT": "YES+1", "SOCS": "CAI"}
+    html = get(f"https://www.youtube.com/channel/{channel_id}/about", cookies=cookies)
     if not html:
         return None
-    # ytInitialData embeds subscriberCountText in a JSON blob
-    m = re.search(r'"subscriberCountText":\{"simpleText":"([^"]+)"', html)
+    m = re.search(r'"subscriberCountText":"([^"]+)"', html)
+    if not m:
+        # fall back to the older nested shape in case YouTube reverts
+        m = re.search(r'"subscriberCountText":\{"simpleText":"([^"]+)"', html)
     if not m:
         return None
-    raw = m.group(1)  # e.g. "41.6K subscribers"
+    raw = m.group(1)  # e.g. "44.8K subscribers"
     nm = re.match(r"([\d.,]+)\s*([KMB])?", raw.replace(",", "."))
     if not nm:
         return None
